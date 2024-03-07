@@ -1,4 +1,6 @@
-import { Field, InputType, Int, OmitType, PartialType } from '@nestjs/graphql';
+import { Field, ID, InputType, OmitType, PartialType } from '@nestjs/graphql';
+import { IsMongoId } from 'class-validator';
+import { Types } from 'mongoose';
 import { User } from '../entities/user.entity';
 
 @InputType()
@@ -10,6 +12,7 @@ export class CreateUserInput extends OmitType(
 
 @InputType()
 export class UpdateUserInput extends PartialType(CreateUserInput) {
-  @Field(() => Int)
-  id: number;
+  @IsMongoId()
+  @Field(() => ID)
+  id: Types.ObjectId;
 }

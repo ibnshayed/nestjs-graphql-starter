@@ -20,8 +20,8 @@ export class UserService {
     return this.userModel.findById(id);
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return this.userModel.findByIdAndUpdate(id, updateUserInput);
+  update(id: Types.ObjectId, updateUserInput: UpdateUserInput) {
+    return this.userModel.findByIdAndUpdate(id, updateUserInput, { new: true });
   }
 
   remove(id: Types.ObjectId) {
