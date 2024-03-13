@@ -39,6 +39,10 @@ export class User {
   phone: string;
 
   @IsBoolean()
+  @Prop({ default: false })
+  resetToken: boolean;
+
+  @IsBoolean()
   @Prop({ default: true })
   status: boolean;
 }

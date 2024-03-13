@@ -1,6 +1,10 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Types } from 'mongoose';
-import { CreateUserInput, UpdateUserInput, UserWithoutPassword } from './dto/user.input';
+import {
+  CreateUserInput,
+  UpdateUserInput,
+  UserWithoutPassword,
+} from './dto/user.input';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 

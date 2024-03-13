@@ -10,6 +10,10 @@ import { GraphQLModule } from '@nestjs/graphql';
       autoSchemaFile: true,
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      formatError: (err) => ({
+        message: err.message,
+        status: err.extensions.code,
+      }),
     }),
   ],
 })

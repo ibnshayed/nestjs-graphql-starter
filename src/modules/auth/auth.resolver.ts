@@ -1,7 +1,9 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Public } from 'src/common/decorators';
 import { AuthService } from './auth.service';
 import { AuthResponse, LoginDto } from './dto/auth.input';
 
+@Public()
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
