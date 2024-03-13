@@ -1,7 +1,8 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsBoolean, IsMongoId, IsString } from 'class-validator';
-import { HydratedDocument, ObjectId } from 'mongoose';
+import * as bcrypt from 'bcrypt';
+import { IsBoolean, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { HydratedDocument, ObjectId, Types } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -10,7 +11,7 @@ export type UserDocument = HydratedDocument<User>;
 export class User {
   @IsMongoId()
   @Field(() => ID)
-  _id: ObjectId;
+  _id: ObjectId | Types.ObjectId;
 
   @IsString()
   @Prop()
@@ -29,7 +30,8 @@ export class User {
   username: string;
 
   @IsString()
-  @Prop()
+  @IsNotEmpty()
+  @Prop({ select: false })
   password: string;
 
   @IsString()
@@ -42,3 +44,19 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.pre<User>('save', function (next: Function) {
+  const user = this;
+  if (user.password) {
+    bcrypt.genSalt(10, function (err, salt) {
+      if (err) return next(err);
+
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        if (err) return next(err);
+
+        user.password = hash;
+        next();
+      });
+    });
+  }
+});

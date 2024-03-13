@@ -1,6 +1,6 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Types } from 'mongoose';
-import { CreateUserInput, UpdateUserInput } from './dto/user.input';
+import { CreateUserInput, UpdateUserInput, UserWithoutPassword } from './dto/user.input';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 
@@ -13,14 +13,14 @@ export class UserResolver {
     return this.userService.create(createUserInput);
   }
 
-  @Query(() => [User], { name: 'users' })
+  @Query(() => [UserWithoutPassword], { name: 'users' })
   findAll() {
     return this.userService.findAll();
   }
 
-  @Query(() => User, { name: 'user' })
+  @Query(() => UserWithoutPassword, { name: 'user' })
   findOne(@Args('id', { type: () => ID }) id: Types.ObjectId) {
-    return this.userService.findOne(id);
+    return this.userService.findOne({ _id: id });
   }
 
   @Mutation(() => User)
@@ -28,7 +28,7 @@ export class UserResolver {
     return this.userService.update(updateUserInput.id, updateUserInput);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserWithoutPassword)
   removeUser(@Args('id', { type: () => ID }) id: Types.ObjectId) {
     return this.userService.remove(id);
   }
