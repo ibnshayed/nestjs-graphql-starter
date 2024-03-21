@@ -1,7 +1,13 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
-import { IsBoolean, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsMongoId,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { HydratedDocument, ObjectId, Types } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
@@ -10,8 +16,9 @@ export type UserDocument = HydratedDocument<User>;
 @Schema({ timestamps: true })
 export class User {
   @IsMongoId()
+  @IsOptional()
   @Field(() => ID)
-  _id: ObjectId | Types.ObjectId;
+  _id?: ObjectId | Types.ObjectId;
 
   @IsString()
   @Prop()
@@ -39,12 +46,14 @@ export class User {
   phone: string;
 
   @IsBoolean()
+  @IsOptional()
   @Prop({ default: false })
-  resetToken: boolean;
+  resetToken?: boolean;
 
   @IsBoolean()
+  @IsOptional()
   @Prop({ default: true })
-  status: boolean;
+  status?: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

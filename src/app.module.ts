@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD, APP_PIPE } from '@nestjs/core';
-import { GqlAuthGuard } from './common/guards/gql-auth.guard';
+import { APP_PIPE } from '@nestjs/core';
 import { TrimPipe } from './common/pipes/trim.pipe';
 import { ConfigurationModule } from './config/configuration.module';
 import { DBModule } from './config/db.module';
@@ -10,10 +9,10 @@ import { ApiModule } from './modules/api.module';
 @Module({
   imports: [ConfigurationModule, DBModule, GraphQLConfigModule, ApiModule],
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: GqlAuthGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: GqlAuthGuard,
+    // },
 
     // {
     //   provide: APP_GUARD,
